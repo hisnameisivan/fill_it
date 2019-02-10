@@ -4,11 +4,11 @@ int		fil_read(int fd, char **line) // возвращает количество 
 {
 	int		i;
 	int		ret;
-	int		lines_num;
+	int		lns_num;
 	char	buf[1000 + 1];
 
 	i = 0;
-	lines_num = 0;
+	lns_num = 0;
 	ret = read(fd, buf, 1000); // ((5 * 4) + 1) * 26 + 1
 	if (ret == 0 || ret == -1)
 		return (-1);
@@ -17,6 +17,6 @@ int		fil_read(int fd, char **line) // возвращает количество 
 	ft_memcpy(*line, buf, ret);
 	while (buf[i])
 		if (buf[i++] == '\n')
-			lines_num++;
-	return (lines_num);
+			lns_num++;
+	return (lns_num);
 }
