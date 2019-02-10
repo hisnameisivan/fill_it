@@ -4,70 +4,95 @@
 
 int		main(int argc, char **argv)
 {
-	int		fd;
-	int		fd1;//
-	int		fd2;//
-	int		fd3;//
-	int		fd4;//
-	int		fd5;//
-	int		fd6;//
-	int		fd7;//
-	int		fd8;//
-	int		fd9;//
-	int		lns_num;
-	char	*line;
+	int		fd = 0;
+	int		lns_num = 0;
+	char	*line = NULL;
 
-	fd = 0;
-	lns_num = 0;
-	line = NULL;
-	//if (argc == 2)
-	//{
+	argc = 0;
+
 		fd = open(argv[1], O_RDONLY);
 		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd1 = open(argv[2], O_RDONLY);
-		lns_num = fil_read(fd1, &line);
+			ft_putendl("1st file fil_read FAIL");
+		ft_putstr("1st file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[2], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd2 = open(argv[3], O_RDONLY);
-		lns_num = fil_read(fd2, &line);
+			ft_putendl("2nd file fil_read FAIL");
+		ft_putstr("2nd file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[3], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd3 = open(argv[4], O_RDONLY);
-		lns_num = fil_read(fd3, &line);
+			ft_putendl("3rd file fil_read FAIL");
+		ft_putstr("3rd file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[4], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd4 = open(argv[5], O_RDONLY);
-		lns_num = fil_read(fd4, &line);
+			ft_putendl("4th file fil_read FAIL");
+		ft_putstr("4th file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[5], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd5 = open(argv[6], O_RDONLY);
-		lns_num = fil_read(fd5, &line);
+			ft_putendl("5th file fil_read FAIL");
+		ft_putstr("5th file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[6], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd6 = open(argv[7], O_RDONLY);
-		lns_num = fil_read(fd6, &line);
+			ft_putendl("6th file fil_read FAIL");
+		ft_putstr("6th file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[7], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd7 = open(argv[8], O_RDONLY);
-		lns_num = fil_read(fd7, &line);
+			ft_putendl("7th file fil_read FAIL");
+		ft_putstr("7th file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[8], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd8 = open(argv[8], O_RDONLY);
-		lns_num = fil_read(fd8, &line);
+			ft_putendl("8th file fil_read FAIL");
+		ft_putstr("8th file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[8], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		fd9 = open(argv[10], O_RDONLY);
-		lns_num = fil_read(fd9, &line);
+			ft_putendl("9th file fil_read FAIL");
+		ft_putstr("9th file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		fd = open(argv[10], O_RDONLY);
+		lns_num = fil_read(fd, &line);
 		if (lns_num == -1)
-			ft_putendl("usage: ");
-		printf("%d\n%s\n", lns_num, line);
-		//fil_valid(lns_num, line);
-		printf("%d\n", fil_valid(lns_num, line));
+			ft_putendl("10th file fil_read FAIL");
+		ft_putstr("10th file fil_valid ");
+		ft_putnbr(fil_valid(lns_num, line));
+		ft_putendl("");
+
+		//printf("%d\n%s\n", lns_num, line);
+		//printf("%d\n", fil_valid(lns_num, line));
 		close(fd);
-	//}
-	//else
-	//	ft_putendl("usage: ");
+
 	return (0);
 }
