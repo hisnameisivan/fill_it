@@ -1,7 +1,5 @@
 #include "fillit.h"
 
-#include <stdio.h>
-
 int		fil_valid(int lns_num, char *line)
 {
 	int		i;
@@ -9,7 +7,6 @@ int		fil_valid(int lns_num, char *line)
 	int		sim_count;
 	char	**spl_line;
 
-	lns_num = 0; // warning
 	i = 0;
 	j = 0;
 	sim_count = 0;
@@ -25,7 +22,7 @@ int		fil_valid(int lns_num, char *line)
 	while (spl_line[i])
 	{
 		j = 0;
-		while(spl_line[i][j])
+		while (spl_line[i][j])
 		{
 			if (spl_line[i][j] == '#')
 			{
@@ -46,5 +43,7 @@ int		fil_valid(int lns_num, char *line)
 		}
 		i++;
 	}
+	if (lns_num != (i * 5 / 4 - 1)) // количество без \n (в массиве spl_line) после преобразования должно равняться начальному количетву \n (lns_num)
+		return (-1);
 	return (1);
 }
