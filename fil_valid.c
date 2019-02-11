@@ -1,6 +1,7 @@
 #include "fillit.h"
 
-//TODO валидность фигур из списка 19
+// TODO	валидность фигур из списка 19
+//		напрашивается закинуть фигуры в структуру, чтобы обращаться к ней одной, а не "выискивать ее в массиве"
 
 int		fil_valid(int lns_num, char *line, char ***array)
 {
@@ -13,15 +14,17 @@ int		fil_valid(int lns_num, char *line, char ***array)
 	j = 0;
 	sim_count = 0;
 	spl_line = ft_strsplit(line, '\n');
-	while (spl_line[i])
+
+	while (spl_line[i])						// проверка на то, что в строке четыре символа
 	{
 		if (ft_strlen(spl_line[i]) == 4)
 			i++;
 		else
 			return (-1);
 	}
+
 	i = 0;
-	while (spl_line[i])
+	while (spl_line[i])						// проверка на то, что четыре решетки (убрать? - нет, ибо простыня ниже будет работать некорректно)
 	{
 		j = 0;
 		while (spl_line[i][j])
@@ -35,7 +38,7 @@ int		fil_valid(int lns_num, char *line, char ***array)
 				j++;
 			else
 				return (-1);
-			if (j == 3 && (i + 1) % 4 == 0) // кратность четырем (одна поданная тетраминка). + 1 т.к. нумерация с нуля
+			if (j == 3 && (i + 1) % 4 == 0)	// кратность четырем (одна поданная тетраминка). + 1 т.к. нумерация с нуля
 			{
 				if (sim_count != 4)
 					return (-1);
@@ -45,8 +48,55 @@ int		fil_valid(int lns_num, char *line, char ***array)
 		}
 		i++;
 	}
-	if (lns_num != (i * 5 / 4 - 1)) // количество без \n (в массиве spl_line) после преобразования должно равняться начальному количетву \n (lns_num)
+
+	if (lns_num != (i * 5 / 4 - 1))			// количество без \n (в массиве spl_line) после преобразования должно равняться начальному количетву \n (lns_num)
 		return (-1);
+
+	i = 0;
+	while (spl_line[i])						// проверка на форму тетраминок
+	{
+		j = 0;
+		sim_count = 0;
+		while (spl_line[i][j])
+		{
+			if (spl_line[i][j] == '#')
+			{
+				if (i % 4 == 0)	// первые строки
+				{
+					if (j == 0)	// первый столбец
+					{
+						if (spl_line[i + 1][j] == '#' || spl_line[i][j + 1] == '#')	// ниже и правее
+							continue ;
+						else
+							return (-1);
+					}
+					if (j == 1)	// второй столбец
+					{
+						if (spl_line[i + 1][j] == '#' || spl_line[i][j + 1] == '#' || spl_line[i][j - 1] == '#')	// ниже, правее и левее
+							continue ;
+						else
+							return (-1);
+					}
+					if (j == 2)	// третий столбец
+					{
+						if (spl_line[i + 1][j] == '#' || spl_line[i][j + 1] == '#' || spl_line[i][j - 1] == '#')	// ниже, правее и левее
+							continue ;
+						else
+							return (-1);
+					}
+					if (j == 3)	// четвертый столбец
+					{
+						if (spl_line[i + 1][j] == '#' || spl_line[i][j - 1] == '#')
+							continue ;
+						else
+							return (-1);
+					}
+				}
+			}
+		}
+		i++;
+	}
+
 /*	// для valgrind
 	i = 0;
 	while (spl_line[i])
