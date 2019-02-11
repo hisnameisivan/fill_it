@@ -6,13 +6,14 @@ int		main(int argc, char **argv)
 	int		ret_fil_read = 0; // lns_num
 	int		ret_fil_valid = 0;
 	char	*line = NULL;
+	char	**array = NULL;
 
 	argc = 1; // счетчик
 	while (argc < 11)
 	{
 		fd = open(argv[argc], O_RDONLY);
-		ret_fil_read = fil_read(fd, &line);				//чтение
-		ret_fil_valid = fil_valid(ret_fil_read, line);	//валидация (несколько проверок)
+		ret_fil_read = fil_read(fd, &line);						//чтение
+		ret_fil_valid = fil_valid(ret_fil_read, line, &array);	//валидация (несколько проверок)
 		ft_putnbr(argc);
 		ft_putstr(" file fil_read  ");
 		ret_fil_read == -1 ? ft_putendl("FAIL") : ft_putendl("SUCCES");		//наличие/отсутствие ошибок чтения

@@ -1,6 +1,8 @@
 #include "fillit.h"
 
-int		fil_valid(int lns_num, char *line)
+//TODO валидность фигур из списка 19
+
+int		fil_valid(int lns_num, char *line, char ***array)
 {
 	int		i;
 	int		j;
@@ -45,5 +47,15 @@ int		fil_valid(int lns_num, char *line)
 	}
 	if (lns_num != (i * 5 / 4 - 1)) // количество без \n (в массиве spl_line) после преобразования должно равняться начальному количетву \n (lns_num)
 		return (-1);
+/*	// для valgrind
+	i = 0;
+	while (spl_line[i])
+	{
+		free(spl_line[i]);
+		i++;
+	}
+	free(spl_line);
+	//*/
+	*array = spl_line;
 	return (1);
 }

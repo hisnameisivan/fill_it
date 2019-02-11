@@ -6,6 +6,6 @@
 # include <stdio.h> //!!!!!
 
 int		fil_read(int fd, char **line);
-int		fil_valid(int lns_num, char *line);
+int		fil_valid(int lns_num, char *line, char ***array);
 
 #endif
