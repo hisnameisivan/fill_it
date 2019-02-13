@@ -5,7 +5,8 @@
 
 # include <stdio.h> //!!!!!
 
-int		fil_read(int fd, char **line);
-int		fil_valid(int lns_num, char *line, char ***array);
+void	fil_shift(char ***array);
+int		fil_valid(char *line);
+int		fil_read(int fd);
 
 #endif

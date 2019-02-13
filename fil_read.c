@@ -1,22 +1,22 @@
 #include "fillit.h"
 
-int		fil_read(int fd, char **line) // возвращает количество \n
+int		fil_read(int fd)
 {
 	int		i;
 	int		ret;
-	int		lns_num;
-	char	buf[1000 + 1];
+	char	*line;
+	char	buf[21 + 1];	// ((5 * 4) + 1)
 
 	i = 0;
-	lns_num = 0;
-	ret = read(fd, buf, 1000); // ((5 * 4) + 1) * 26 + 1
-	if (ret == 0 || ret == -1)
+	while ((ret = read(fd, buf, 21)) > 0)
+	{
+		buf[ret] = '\0';
+		line = ft_strnew(ret);
+		ft_memcpy(line, buf, ret);
+		if (fil_valid(line) == -1)
+			return (-1);
+	}
+	if (ret == -1)
 		return (-1);
-	buf[ret] = '\0';
-	*line = ft_strnew(ret);
-	ft_memcpy(*line, buf, ret);
-	while (buf[i])
-		if (buf[i++] == '\n')
-			lns_num++;
-	return (lns_num);
+	return (1);
 }
