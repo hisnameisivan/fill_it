@@ -1,86 +1,18 @@
 #include "fillit.h"
 
-// TODO	+ валидность фигур из списка 19
+// TODO	валидность фигур из списка 19
 //		напрашивается закинуть фигуры в структуру, чтобы обращаться к ней одной, а не "выискивать ее в массиве"
 //		функцию можно переделать в плане возвращаемого значения (char** NULL - плохо, массив -хорошо),
-//		тогда параметров станет больше, мб меньше проблем со звезочками
+//		тогда параметров станет три, мб меньше проблем со звезочками
 
-int		fil_valid(char *line, int *flag)
+int		fil_valid(int lns_num, char *line, char ***array)
 {
 	int		i;
-	int		count_sharp;
-	int		count_dot;
-	int		count_sn;
+	int		j;
+	int		sim_count;
 	char	**spl_line;
 
 	i = 0;
-	count_sharp = 0;
-	count_dot = 0;
-	count_sn = 0;
-
-
-	spl_line = ft_strsplit(line, '\n');
-
-
-	while (line[i])
-	{
-		if (line[i] == '#')
-			count_sharp++;
-		else if (line[i] == '.')
-			count_dot++;
-		else if (line[i] == '\n')
-		{
-			count_sn++;
-			if (!((i + 1) % 5 == 0 || i == 20))		// проверка на то, что в строке четыре символа (кратность 5)
-				return (-1);						// и последний перенос строки, если тетраминок больше одной
-		}
-		else
-			return (-1);
-		i++;
-	}
-
-
-	if ((count_sharp != 4) || (count_dot != 12)\
-		|| (count_sn < 4 || count_sn > 5))			// 4 звезды, 12 точек, 4 или 5 переносов
-		return (-1);
-	*flag = (count_sn == 5 ? 1 : 0);
-
-
-	fil_shift(&spl_line);
-
-
-	i = 0;
-	while (spl_line[i])								// валидность строк
-	{
-		if (!ft_strcmp(spl_line[i], ".#.#") || !ft_strcmp(spl_line[i], "##.#")\
-			|| !ft_strcmp(spl_line[i], "#.#.") || !ft_strcmp(spl_line[i], "#.##")\
-			|| !ft_strcmp(spl_line[i], "#..#"))
-			return (-1);
-		else
-			i++;
-	}
-
-
-	i = 0;
-	while (line[i] != '\n')							// валидность столбцов
-	{
-		if ((line[i] == '.' && line[i + 5] == '#' && line[i + 10] == '.' && line[i + 15] == '#')\
-			|| (line[i] == '#' && line[i + 5] == '#' && line[i + 10] == '.' && line[i + 15] == '#')\
-			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '#' && line[i + 15] == '.')\
-			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '#' && line[i + 15] == '#')\
-			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '.' && line[i + 15] == '#'))
-			return (-1);
-		else
-			i++;
-	}
-
-	fil_crt_struct();
-	fil_add_struct(&begin, spl_line);
-
-	return (1);
-}
-
-/*	i = 0;
 	j = 0;
 	sim_count = 0;
 	spl_line = ft_strsplit(line, '\n');
@@ -139,7 +71,7 @@ int		fil_valid(char *line, int *flag)
 		while ((lns_num + 1) * 4 / 5)
 
 		if (line[i] == '0' && line[i + 5] == '0' && line[i] == '0' && line[i] == '0' &&)
-	}*/
+	}
 
 /*	i = 0;	// для valgrind
 	while (spl_line[i])
@@ -148,7 +80,9 @@ int		fil_valid(char *line, int *flag)
 		i++;
 	}
 	free(spl_line);	*/
-	//*array = spl_line;
+	*array = spl_line;
+	return (1);
+}
 
 /*	i = 0;
 	while (spl_line[i])						// проверка на форму тетраминок
