@@ -74,11 +74,61 @@ int		fil_valid(char *line, int *flag)
 			i++;
 	}
 
-	fil_crt_struct();
-	fil_add_struct(&begin, spl_line);
+
+	static t_flist	*begin;
+	t_flist			*temp;
+
+	temp = NULL;
+	if(!begin)
+	{
+		begin = fil_crt_struct(spl_line);
+		fil_print_one_struct(begin);
+		ft_putstr("\n");
+	}
+	else
+	{
+		fil_add_struct(&begin, temp = fil_crt_struct(spl_line));
+		fil_print_one_struct(temp);
+		ft_putstr("\n");
+	}
+
 
 	return (1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*	i = 0;
 	j = 0;

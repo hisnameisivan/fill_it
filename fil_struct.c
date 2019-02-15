@@ -44,18 +44,48 @@ t_flist	*fil_crt_struct(char **array)
 
 void	fil_add_struct(t_flist **begin, t_flist *list)
 {
-	t_flist	*
+	t_flist	*temp;
+
+	if (begin && list)
+	{
+		temp = *begin;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = list;
+	}
 }
 
-if (!(array[j] = (char *)malloc(sizeof(char) * (len + 1))))
+// DEMO
+void	fil_print_struct(t_flist *begin)
+{
+	int		i;
+	t_flist	*temp;
+
+	i = 0;
+	if (begin)
 	{
-		while (j > 0)
+		temp = begin;
+		while (temp)
 		{
-			free(array[j - 1]);
-			array[j - 1] = NULL;
-			j--;
+			i = 0;
+			while ((temp->array)[i])
+				ft_putendl((temp->array)[i++]);
+			temp = temp->next;
+			if (temp)
+				ft_putstr("\n");
 		}
-		free(array);
-		array = NULL;
-		return (0);
 	}
+}
+
+// DEMO
+void	fil_print_one_struct(t_flist *list)
+{
+	int		i;
+
+	i = 0;
+	if (list)
+	{
+		while ((list->array)[i])
+			ft_putendl((list->array)[i++]);
+	}
+}
