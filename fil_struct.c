@@ -1,6 +1,33 @@
 #include "fillit.h"
 
-t_flist	*fil_crt_struct(char **array)
+void	fil_max_xy_struct(char **array, t_flist **list)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	(*list)->max_x = 0;
+	(*list)->max_y = 0;
+	while (array[i])
+	{
+		j = 0;
+		while (array[i][j])
+		{
+			if (array[i][j] == '#')
+			{
+				if ((*list)->max_x < j + 1)
+					(*list)->max_x = j + 1;
+				if ((*list)->max_y < i + 1)
+					(*list)->max_y = i + 1;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+t_flist	*fil_create_struct(char **array)
 {
 	int		i;
 	t_flist	*temp;
@@ -11,6 +38,8 @@ t_flist	*fil_crt_struct(char **array)
 	if (!array)
 	{
 		temp->array = NULL;
+		temp->max_x = 0;
+		temp->max_y = 0;
 		temp->next = NULL;
 	}
 	else
@@ -37,6 +66,7 @@ t_flist	*fil_crt_struct(char **array)
 			ft_memcpy((temp->array)[i], array[i], 5);
 			i++;
 		}
+		fil_max_xy_struct(array, &temp);
 		temp->next = NULL;
 	}
 	return (temp);
@@ -69,39 +99,4 @@ int		fil_len_struct(t_flist *begin)
 		}
 	}
 	return (len);
-}
-
-// DEMO
-void	fil_print_struct(t_flist *begin)
-{
-	int		i;
-	t_flist	*temp;
-
-	i = 0;
-	if (begin)
-	{
-		temp = begin;
-		while (temp)
-		{
-			i = 0;
-			while ((temp->array)[i])
-				ft_putendl((temp->array)[i++]);
-			temp = temp->next;
-			if (temp)
-				ft_putstr("\n");
-		}
-	}
-}
-
-// DEMO
-void	fil_print_one_struct(t_flist *list)
-{
-	int		i;
-
-	i = 0;
-	if (list)
-	{
-		while ((list->array)[i])
-			ft_putendl((list->array)[i++]);
-	}
 }

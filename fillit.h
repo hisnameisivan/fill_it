@@ -8,11 +8,14 @@
 typedef struct		s_flist
 {
 	char			**array;
+	int				max_x;
+	int				max_y;
 	struct s_flist	*next;
 }					t_flist;
 
 int		fil_min_map(int num_ttr);
-t_flist	*fil_crt_struct(char **array);
+void	fil_max_xy_struct(char **array, t_flist **list);
+t_flist	*fil_create_struct(char **array);
 void	fil_print_struct(t_flist *begin);		// DEMO
 void	fil_print_one_struct(t_flist *list);	// DEMO
 int		fil_len_struct(t_flist *begin);

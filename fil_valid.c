@@ -1,5 +1,6 @@
 #include "fillit.h"
 
+//		ограничение на максимальное количесвто тетрамин (26)
 //		напрашивается закинуть фигуры в структуру, чтобы обращаться к ней одной, а не "выискивать ее в массиве"
 //		функцию можно переделать в плане возвращаемого значения (char** NULL - плохо, массив -хорошо),
 //		тогда параметров станет больше, мб меньше проблем со звезочками
@@ -80,17 +81,21 @@ int		fil_valid(char *line, int *flag)
 	temp = NULL;
 	if(!begin)
 	{
-		begin = fil_crt_struct(spl_line);
+		begin = fil_create_struct(spl_line);
 		fil_print_one_struct(begin);
 		ft_putstr("\n");
 	}
 	else
 	{
-		fil_add_struct(&begin, temp = fil_crt_struct(spl_line));
+		fil_add_struct(&begin, temp = fil_create_struct(spl_line));
 		fil_print_one_struct(temp);
 		ft_putstr("\n");
 	}
 	printf("%d\n", fil_len_struct(begin));
+	if (!temp)
+		printf("x = %d y = %d\n", begin->max_x, begin->max_y);
+	if (temp)
+		printf("x = %d y = %d\n", temp->max_x, temp->max_y);
 
 
 	return (1);

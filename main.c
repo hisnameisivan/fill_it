@@ -15,3 +15,6 @@ int		main(int argc, char **argv)
 		ft_putendl("usage: ");
 	return (0);
 }
+
+//TODO:	malloc заменить на strnew где возможно
+//		упаковать инкремент/декремент индекса (?)
