@@ -11,9 +11,11 @@ typedef struct		s_flist
 	struct s_flist	*next;
 }					t_flist;
 
+int		fil_min_map(int num_ttr);
 t_flist	*fil_crt_struct(char **array);
 void	fil_print_struct(t_flist *begin);		// DEMO
 void	fil_print_one_struct(t_flist *list);	// DEMO
+int		fil_len_struct(t_flist *begin);
 void	fil_add_struct(t_flist **begin, t_flist *list);
 void	fil_shift(char ***array);
 int		fil_valid(char *line, int *flag);

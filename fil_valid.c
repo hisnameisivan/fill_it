@@ -1,6 +1,5 @@
 #include "fillit.h"
 
-// TODO	+ валидность фигур из списка 19
 //		напрашивается закинуть фигуры в структуру, чтобы обращаться к ней одной, а не "выискивать ее в массиве"
 //		функцию можно переделать в плане возвращаемого значения (char** NULL - плохо, массив -хорошо),
 //		тогда параметров станет больше, мб меньше проблем со звезочками
@@ -75,7 +74,7 @@ int		fil_valid(char *line, int *flag)
 	}
 
 
-	static t_flist	*begin;
+	static t_flist	*begin;							// формирование структуры (черновик), печать для наглядности
 	t_flist			*temp;
 
 	temp = NULL;
@@ -91,6 +90,7 @@ int		fil_valid(char *line, int *flag)
 		fil_print_one_struct(temp);
 		ft_putstr("\n");
 	}
+	printf("%d\n", fil_len_struct(begin));
 
 
 	return (1);

@@ -55,6 +55,22 @@ void	fil_add_struct(t_flist **begin, t_flist *list)
 	}
 }
 
+int		fil_len_struct(t_flist *begin)
+{
+	int		len;
+
+	len = 0;
+	if (begin)
+	{
+		while (begin)
+		{
+			len++;
+			begin = begin->next;
+		}
+	}
+	return (len);
+}
+
 // DEMO
 void	fil_print_struct(t_flist *begin)
 {
