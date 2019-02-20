@@ -77,17 +77,20 @@ int		fil_valid(char *line, int *flag)
 
 	static t_flist	*begin;							// формирование структуры (черновик), печать для наглядности
 	t_flist			*temp;
+	static char		letter = 'A';
 
 	temp = NULL;
 	if(!begin)
 	{
-		begin = fil_create_struct(spl_line);
+		begin = fil_create_struct(spl_line, letter);
+		letter++;
 		fil_print_one_struct(begin);
 		ft_putstr("\n");
 	}
 	else
 	{
-		fil_add_struct(&begin, temp = fil_create_struct(spl_line));
+		fil_add_struct(&begin, temp = fil_create_struct(spl_line, letter));
+		letter++;
 		fil_print_one_struct(temp);
 		ft_putstr("\n");
 	}
@@ -96,6 +99,9 @@ int		fil_valid(char *line, int *flag)
 		printf("x = %d y = %d\n", begin->max_x, begin->max_y);
 	if (temp)
 		printf("x = %d y = %d\n", temp->max_x, temp->max_y);
+
+
+	fil_map(begin, 4);
 
 
 	return (1);

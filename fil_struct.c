@@ -27,12 +27,14 @@ void	fil_max_xy_struct(char **array, t_flist **list)
 	}
 }
 
-t_flist	*fil_create_struct(char **array)
+t_flist	*fil_create_struct(char **array, char letter)
 {
 	int		i;
+	int		j;
 	t_flist	*temp;
 
 	i = 0;
+	j = 0;
 	if (!(temp = (t_flist *)malloc(sizeof(t_flist))))
 		return (NULL);
 	if (!array)
@@ -63,7 +65,16 @@ t_flist	*fil_create_struct(char **array)
 				free(temp);
 				return (NULL);
 			}
-			ft_memcpy((temp->array)[i], array[i], 5);
+			//ft_memcpy((temp->array)[i], array[i], 5);
+			j = 0;
+			while (j < 5)
+			{
+				if (array[i][j] == '#')
+					(temp->array)[i][j] = letter;
+				else
+					(temp->array)[i][j] = array[i][j];
+				j++;
+			}
 			i++;
 		}
 		fil_max_xy_struct(array, &temp);

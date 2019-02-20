@@ -13,9 +13,10 @@ typedef struct		s_flist
 	struct s_flist	*next;
 }					t_flist;
 
+int		fil_map(t_flist *begin, int side);
 int		fil_min_map(int num_ttr);
 void	fil_max_xy_struct(char **array, t_flist **list);
-t_flist	*fil_create_struct(char **array);
+t_flist	*fil_create_struct(char **array, char letter);
 void	fil_print_struct(t_flist *begin);		// DEMO
 void	fil_print_one_struct(t_flist *list);	// DEMO
 int		fil_len_struct(t_flist *begin);
