@@ -1,23 +1,28 @@
 #include "fillit.h"
 
-int		fil_read(int fd)
+int		fil_read(int fd, t_flist **begin)
 {
-	int		i;
 	int		ret;
 	int		flag_sn;
-	char	*line;
+	char	letter;
 	char	buf[21 + 1];	// ((5 * 4) + 1)
+	t_flist	*temp;
 
-	i = 0;
 	flag_sn = 0;
-	line = NULL;
+	letter = 'A';
+	temp = NULL;
 	while ((ret = read(fd, buf, 21)) > 0)
 	{
 		buf[ret] = '\0';
-		line = ft_strnew(ret);
-		ft_memcpy(line, buf, ret);
-		if (fil_valid(line, &flag_sn) == -1)
+		if ((temp = fil_valid(buf, &flag_sn, letter)) == NULL)
 			return (-1);
+		if (!(*begin))
+			*begin = temp;
+		else
+			fil_add_struct(begin, temp);
+		fil_print_one_struct(temp);	// DEMO
+		ft_putstr("\n");			// DEMO
+		letter++;
 	}
 	if (ret == -1 || flag_sn == 1)
 		return (-1);

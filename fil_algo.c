@@ -1,38 +1,26 @@
 #include "fillit.h"
 
- char	*ft_strdot(size_t size)
-{
-	char	*temp;
-	size_t	i;
-
-	i = 0;
-	if (((size + 1) == 0) || !(temp = (char*)malloc(sizeof(char) * (size + 1))))
-		return (NULL);
-	while (i < size)
-	{
-		temp[i] = '.';
-		i++;
-	}
-	temp[i] = '\0';
-	return (temp);
-}
-
 int		fil_min_map(int num_ttr)
 {
 	int		side;
 
 	side = 0;
-	while (side * side < num_ttr)
+	while (side * side < 4 * num_ttr)
 		side++;
 	return (side);
 }
 
-int		fil_max_dim(t_flist *list)
+int		fil_max_dim(t_flist *list, int side)
 {
-	if (list->max_x > list->max_y)
-		return (list->max_x);
-	else
-		return (list->max_y);
+	while (list)
+	{
+		if (list->max_x > side && list->max_x > list->max_y)
+			return (list->max_x);
+		else if (list->max_y > side && list->max_y > list->max_x)
+			return (list->max_y);
+		list = list->next;
+	}
+	return (side);
 }
 
 int		fil_algo(t_flist *list, int side, char ***map)
@@ -48,7 +36,6 @@ int		fil_algo(t_flist *list, int side, char ***map)
 	d = 0;
 	// k = 0;
 	// dx = 0;
-	side = 0;
 	while (list->array[i] && (*map)[i])
 	{
 		j = 0;
@@ -63,8 +50,11 @@ int		fil_algo(t_flist *list, int side, char ***map)
 			}
 			j++;
 		}
-		if (j < side)
+		if (j + d < side)
+		{
 			d++;
+			i--;
+		}
 		i++;
 	}
 	// dx++;
@@ -72,33 +62,20 @@ int		fil_algo(t_flist *list, int side, char ***map)
 	return 1;
 }
 
-int		fil_map(t_flist *begin, int side)	// что возвращает? Проверка malloc? Возможность вписать? ТЕСТ
+char	**fil_map(t_flist *begin, int side)
 {
 	char	**map;
 	t_flist	*temp;
 	int		i;
-	int		max_dim;
 
 	map = NULL;
 	temp = begin;
 	i = 0;
-	max_dim = 0;
-	if (temp)
-	{
-		while (temp)
-		{
-			if (temp->max_x > side || temp->max_y > side)
-				side = fil_max_dim(temp);
-			temp = temp->next;
-		}
-	}
-	else
-		return (0);
 	if (!(map = (char **)malloc(sizeof(char *) * side + 1)))
-		return (0);
+		return (NULL);
 	while (i < side)
 	{
-		if (!(map[i] = ft_strdot(side)))
+		if (!(map[i] = ft_strnew(side)))
 		{
 			while (i > 0)
 			{
@@ -106,12 +83,25 @@ int		fil_map(t_flist *begin, int side)	// что возвращает? Пров�
 				i--;
 			}
 			free(map);
-			return (0);
+			return (NULL);
 		}
+		ft_memset(map[i], 46, side);
 		i++;
 	}
 	map[i] = NULL;
+	return (map);
+}
+
+int		fil_core(t_flist *begin)
+{
+	t_flist	*temp;
+	char	**map;
+	int		i;
+	int		side;
+
 	temp = begin;
+	side = fil_max_dim(temp, fil_min_map(fil_len_struct(begin)));
+	map = fil_map(begin, side);
 	while (temp)
 	{
 		/*while (fil_algo(temp, side, &map) == 0)
@@ -123,15 +113,11 @@ int		fil_map(t_flist *begin, int side)	// что возвращает? Пров�
 		fil_algo(temp, side, &map);
 		temp = temp->next;
 	}
-
-
 	i = 0;
 	while (map[i])
 	{
 		printf("%s\n", map[i]);
 		i++;
 	}
-
-
-	return 0;
+	return (1);
 }

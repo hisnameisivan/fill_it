@@ -1,11 +1,6 @@
 #include "fillit.h"
 
-//		ограничение на максимальное количесвто тетрамин (26)
-//		напрашивается закинуть фигуры в структуру, чтобы обращаться к ней одной, а не "выискивать ее в массиве"
-//		функцию можно переделать в плане возвращаемого значения (char** NULL - плохо, массив -хорошо),
-//		тогда параметров станет больше, мб меньше проблем со звезочками
-
-int		fil_valid(char *line, int *flag)
+t_flist	*fil_valid(char *line, int *flag, char letter)
 {
 	int		i;
 	int		count_sharp;
@@ -17,6 +12,10 @@ int		fil_valid(char *line, int *flag)
 	count_sharp = 0;
 	count_dot = 0;
 	count_sn = 0;
+
+
+	if (letter >= '[')
+		return (NULL);
 
 
 	spl_line = ft_strsplit(line, '\n');
@@ -32,17 +31,17 @@ int		fil_valid(char *line, int *flag)
 		{
 			count_sn++;
 			if (!((i + 1) % 5 == 0 || i == 20))		// проверка на то, что в строке четыре символа (кратность 5)
-				return (-1);						// и последний перенос строки, если тетраминок больше одной
+				return (NULL);						// и последний перенос строки, если тетраминок больше одной
 		}
 		else
-			return (-1);
+			return (NULL);
 		i++;
 	}
 
 
 	if ((count_sharp != 4) || (count_dot != 12)\
 		|| (count_sn < 4 || count_sn > 5))			// 4 звезды, 12 точек, 4 или 5 переносов
-		return (-1);
+		return (NULL);
 	*flag = (count_sn == 5 ? 1 : 0);
 
 
@@ -55,7 +54,7 @@ int		fil_valid(char *line, int *flag)
 		if (!ft_strcmp(spl_line[i], ".#.#") || !ft_strcmp(spl_line[i], "##.#")\
 			|| !ft_strcmp(spl_line[i], "#.#.") || !ft_strcmp(spl_line[i], "#.##")\
 			|| !ft_strcmp(spl_line[i], "#..#"))
-			return (-1);
+			return (NULL);
 		else
 			i++;
 	}
@@ -69,43 +68,85 @@ int		fil_valid(char *line, int *flag)
 			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '#' && line[i + 15] == '.')\
 			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '#' && line[i + 15] == '#')\
 			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '.' && line[i + 15] == '#'))
-			return (-1);
+			return (NULL);
 		else
 			i++;
 	}
 
 
-	static t_flist	*begin;							// формирование структуры (черновик), печать для наглядности
-	t_flist			*temp;
-	static char		letter = 'A';
-
-	temp = NULL;
-	if(!begin)
-	{
-		begin = fil_create_struct(spl_line, letter);
-		letter++;
-		fil_print_one_struct(begin);
-		ft_putstr("\n");
-	}
-	else
-	{
-		fil_add_struct(&begin, temp = fil_create_struct(spl_line, letter));
-		letter++;
-		fil_print_one_struct(temp);
-		ft_putstr("\n");
-	}
-	printf("%d\n", fil_len_struct(begin));
-	if (!temp)
-		printf("x = %d y = %d\n", begin->max_x, begin->max_y);
-	if (temp)
-		printf("x = %d y = %d\n", temp->max_x, temp->max_y);
-
-
-	fil_map(begin, 4);
-
-
-	return (1);
+	return (fil_create_struct(spl_line, letter));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// static t_flist	*begin;							// формирование структуры (черновик), печать для наглядности
+	// t_flist			*temp;
+	// static char		letter = 'A';
+
+	// temp = NULL;
+	// if(!begin)
+	// {
+	// 	begin = fil_create_struct(spl_line, letter);
+	// 	letter++;
+	// 	fil_print_one_struct(begin);
+	// 	ft_putstr("\n");
+	// }
+	// else
+	// {
+	// 	fil_add_struct(&begin, temp = fil_create_struct(spl_line, letter));
+	// 	letter++;
+	// 	fil_print_one_struct(temp);
+	// 	ft_putstr("\n");
+	// }
+	// printf("%d\n", fil_len_struct(begin));
+	// if (!temp)
+	// 	printf("x = %d y = %d\n", begin->max_x, begin->max_y);
+	// if (temp)
+	// 	printf("x = %d y = %d\n", temp->max_x, temp->max_y);
+
+
+	// fil_core(begin, 4);
+
+
+
 
 
 
