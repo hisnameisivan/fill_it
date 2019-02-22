@@ -20,11 +20,11 @@ int		fil_read(int fd, t_flist **begin)
 			*begin = temp;
 		else
 			fil_add_struct(begin, temp);
-		fil_print_one_struct(temp);	// DEMO
-		ft_putstr("\n");			// DEMO
+		//fil_print_one_struct(temp);	// DEMO
+		//ft_putstr("\n");			// DEMO
 		letter++;
 	}
-	if (ret == -1 || flag_sn == 1)
+	if (ret == -1 || flag_sn == 1 || (*buf == '\0' && ret == 0))
 		return (-1);
 	return (1);
 }

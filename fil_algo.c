@@ -103,20 +103,23 @@ int		fil_core(t_flist *begin)
 	char	**map;
 	int		i;
 	int		side;
+	int		algo;
 
+	algo = 0;
 	temp = begin;
 	side = fil_max_dim(temp, fil_min_map(fil_len_struct(begin)));
 	map = fil_map(begin, side);
 	while (temp)
 	{
-		while (fil_algo(temp, side, &map) == -1)
+		algo = fil_algo(temp, side, &map);
+		if (algo == -1)
 		{
-			//del map;
+			//del map
 			side++;
 			map = fil_map(begin, side);
-			fil_algo(temp, side + 1, &map);
+			temp = begin;
+			continue ;
 		}
-		//fil_algo(temp, side, &map);
 		temp = temp->next;
 	}
 	i = 0;
