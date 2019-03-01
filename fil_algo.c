@@ -23,54 +23,82 @@ int		fil_max_dim(t_flist *list, int side)
 	return (side);
 }
 
-int		fil_algo(t_flist *list, int side, char ***map)
+int		fil_check_ttr(t_flist *list, int i, int j, char **map)
+{
+	int		side;
+	int		k;
+
+	side = ft_strlen(map[0]);
+	k = 0;
+	while (k < 4)
+	{
+		if (i + list->y[k] >= side || j + list->x[k] >= side)
+			return (0);
+		k++;
+	}
+	if (map[i + list->y[0]][j + list->x[0]] == '.' \
+	&& map[i + list->y[1]][j + list->x[1]] == '.' \
+	&& map[i + list->y[2]][j + list->x[2]] == '.' \
+	&& map[i + list->y[3]][j + list->x[3]] == '.')
+		return (1);
+	else
+		return (0);
+}
+
+void	fil_filling(t_flist *list, int i, int j, char **map)
+{
+	map[i + list->y[0]][j + list->x[0]] = list->letter;
+	map[i + list->y[1]][j + list->x[1]] = list->letter;
+	map[i + list->y[2]][j + list->x[2]] = list->letter;
+	map[i + list->y[3]][j + list->x[3]] = list->letter;
+}
+
+void	fil_del_letter(char **map, char letter)
 {
 	int		i;
 	int		j;
-	int		dx;
-	int		dy;
 
 	i = 0;
 	j = 0;
-	dx = 0;
-	dy = 0;
-	while ((*map)[i + dy])
+	while (map[i])
 	{
-		while ((*map)[i + dy][j + dx])
+		j = 0;
+		while (map[i][j])
 		{
-			if (dx + list->max_x > side)
+			if (map[i][j] == letter)
+				map[i][j] = '.';
+			j++;
+		}
+		i++;
+	}
+}
+
+int		fil_algo(t_flist *list, int side, char **map)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (list == NULL)
+		return (1);
+	while (i < side)
+	{
+		j = 0;
+		while (j < side)
+		{
+			if (fil_check_ttr(list, i, j, map))
 			{
-				dy++;
-				dx = 0;
-				i = 0;
-				j = 0;
-			}
-			if (dy + list->max_y > side)
-				return (-1);
-			if ((*map)[i + dy + list->y[0]][j + dx + list->x[0]] == '.' \
-			&& (*map)[i + dy + list->y[1]][j + dx + list->x[1]] == '.' \
-			&& (*map)[i + dy + list->y[2]][j + dx + list->x[2]] == '.' \
-			&& (*map)[i + dy + list->y[3]][j + dx + list->x[3]] == '.')
-			{
-				(*map)[i + dy + list->y[0]][j + dx + list->x[0]] = list->letter;
-				(*map)[i + dy + list->y[1]][j + dx + list->x[1]] = list->letter;
-				(*map)[i + dy + list->y[2]][j + dx + list->x[2]] = list->letter;
-				(*map)[i + dy + list->y[3]][j + dx + list->x[3]] = list->letter;
-				return (1);
-			}
-			else
-			{
-				if (j + dx < side)
-				{
-					dx++;
-					j--;
-				}
+				fil_filling(list, i, j, map);
+				if (fil_algo(list->next, side, map))
+					return (1);
+				fil_del_letter(map, list->letter);
 			}
 			j++;
 		}
 		i++;
 	}
-	return (-1);
+	return (0);
 }
 
 char	**fil_map(t_flist *begin, int side)
@@ -115,19 +143,20 @@ int		fil_core(t_flist *begin)
 	temp = begin;
 	side = fil_max_dim(temp, fil_min_map(fil_len_struct(begin)));
 	map = fil_map(begin, side);
-	while (temp)
-	{
-		algo = fil_algo(temp, side, &map);
-		if (algo == -1)
+	//while (temp)
+//	{
+		algo = fil_algo(temp, side, map);
+		if (algo == 0)
 		{
 			//del map утечка
 			side++;
 			map = fil_map(begin, side);
 			temp = begin;
-			continue ;
+			fil_algo(temp, side, map);
+			//continue ;
 		}
-		temp = temp->next;
-	}
+	//	temp = temp->next;
+	//}
 	i = 0;
 	while (map[i])
 	{
@@ -233,4 +262,54 @@ int		fil_core(t_flist *begin)
 		i++;
 	}
 	return (1);
+}*/
+
+/*int		fil_algo(t_flist *list, int side, char ***map)	//	новее
+{
+	int		i;
+	int		j;
+	int		dx;
+	int		dy;
+
+	i = 0;
+	j = 0;
+	dx = 0;
+	dy = 0;
+	while ((*map)[i + dy])
+	{
+		while ((*map)[i + dy][j + dx])
+		{
+			if (dx + list->max_x > side)
+			{
+				dy++;
+				dx = 0;
+				i = 0;
+				j = 0;
+			}
+			if (dy + list->max_y > side)
+				return (-1);
+			if ((*map)[i + dy + list->y[0]][j + dx + list->x[0]] == '.' \
+			&& (*map)[i + dy + list->y[1]][j + dx + list->x[1]] == '.' \
+			&& (*map)[i + dy + list->y[2]][j + dx + list->x[2]] == '.' \
+			&& (*map)[i + dy + list->y[3]][j + dx + list->x[3]] == '.')
+			{
+				(*map)[i + dy + list->y[0]][j + dx + list->x[0]] = list->letter;
+				(*map)[i + dy + list->y[1]][j + dx + list->x[1]] = list->letter;
+				(*map)[i + dy + list->y[2]][j + dx + list->x[2]] = list->letter;
+				(*map)[i + dy + list->y[3]][j + dx + list->x[3]] = list->letter;
+				return (1);
+			}
+			else
+			{
+				if (j + dx < side)
+				{
+					dx++;
+					j--;
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+	return (-1);
 }*/
