@@ -13,6 +13,7 @@ int		main(int argc, char **argv)
 			ft_putendl("usage: ");
 		if (fil_core(begin) == -1)
 			exit(-1);
+		fil_destroy_list(&begin);
 		close(fd);
 	}
 	else

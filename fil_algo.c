@@ -32,7 +32,7 @@ int		fil_check_ttr(t_flist *list, int i, int j, char **map)
 	k = 0;
 	while (k < 4)
 	{
-		if (i + list->y[k] >= side || j + list->x[k] >= side)
+		if (j + list->x[k] >= side || i + list->y[k] >= side)
 			return (0);
 		k++;
 	}
@@ -131,38 +131,46 @@ char	**fil_map(t_flist *begin, int side)
 	return (map);
 }
 
+void	fil_del_map(char ***map)
+{
+	int		i;
+
+	i = 0;
+	while ((*map)[i])
+	{
+		free((*map)[i]);
+		(*map)[i] = NULL;
+		i++;
+	}
+	free(*map);
+	*map = NULL;
+}
+
 int		fil_core(t_flist *begin)
 {
 	t_flist	*temp;
 	char	**map;
 	int		i;
 	int		side;
-	int		algo;
 
-	algo = 0;
 	temp = begin;
 	side = fil_max_dim(temp, fil_min_map(fil_len_struct(begin)));
 	map = fil_map(begin, side);
-	//while (temp)
-//	{
-		algo = fil_algo(temp, side, map);
-		if (algo == 0)
-		{
-			//del map утечка
-			side++;
-			map = fil_map(begin, side);
-			temp = begin;
-			fil_algo(temp, side, map);
-			//continue ;
-		}
-	//	temp = temp->next;
-	//}
+	while (fil_algo(temp, side, map) == 0)
+	{
+		fil_del_map(&map);
+		side++;
+		map = fil_map(begin, side);
+		temp = begin;
+	}
 	i = 0;
 	while (map[i])
 	{
-		printf("%s\n", map[i]);
+		ft_putendl(map[i]);
+		free(map[i]);
 		i++;
 	}
+	free(map);
 	return (1);
 }
 

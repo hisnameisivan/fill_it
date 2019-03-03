@@ -1,1 +1,1 @@
-./a.out test_1.ttr test_2.ttr test_3.ttr test_4.ttr test_5.ttr test_6.ttr test_7.ttr test_8.ttr test_9.ttr test_10.ttr 
+./a.out tests/test_1.ttr tests/test_2.ttr tests/test_3.ttr tests/test_4.ttr tests/test_5.ttr tests/test_6.ttr tests/test_7.ttr tests/test_8.ttr tests/test_9.ttr tests/test_10.ttr 

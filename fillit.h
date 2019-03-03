@@ -15,6 +15,7 @@ typedef struct		s_flist
 	struct s_flist	*next;
 }					t_flist;
 
+void	fil_destroy_list(t_flist **begin);
 int		fil_len_struct(t_flist *begin);
 int		fil_core(t_flist *begin);
 int		fil_min_map(int num_ttr);

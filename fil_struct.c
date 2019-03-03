@@ -102,6 +102,13 @@ t_flist	*fil_create_struct(char **array, char letter)
 	fil_max_xy_struct(array, &temp);
 	temp->letter = letter;
 	temp->next = NULL;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 	return (temp);
 }
 
@@ -134,6 +141,18 @@ int		fil_len_struct(t_flist *begin)
 	return (len);
 }
 
+void	fil_destroy_list(t_flist **begin)
+{
+	t_flist	*temp;
+
+	temp = NULL;
+	while (*begin)
+	{
+		temp = (*begin)->next;
+		free(*begin);
+		*begin = temp;
+	}
+}
 
 
 

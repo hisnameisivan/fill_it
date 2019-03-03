@@ -74,6 +74,17 @@ t_flist	*fil_valid(char *line, int *flag, char letter)
 	}
 
 
+	// i = 0;
+	// while (spl_line[i])
+	// {
+	// 	free(spl_line[i]);
+	// 	spl_line[i] = NULL;
+	// 	i++;
+	// }
+	// free(spl_line);
+	// spl_line = NULL;
+
+
 	return (fil_create_struct(spl_line, letter));
 }
 
