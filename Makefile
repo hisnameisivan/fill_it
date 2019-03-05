@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: waddam <marvin@42.fr>                      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/03/05 20:24:44 by waddam            #+#    #+#              #
-#    Updated: 2019/03/05 20:24:47 by waddam           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = fillit
 SRC = fil_algo.c\
 		fil_map.c\
@@ -21,18 +9,15 @@ SRC = fil_algo.c\
 SRC_PATH = src/
 SRC_COMPL = $(addprefix $(SRC_PATH), $(SRC))
 OBJ = $(SRC:%.c=%.o)
-LIB = libft.a
 
 all: $(NAME)
 
-$(NAME): $(LIB) $(OBJ)
+$(NAME): $(OBJ)
 	gcc -Wall -Wextra -Werror $(OBJ) -o $(NAME) -L./libft -lft
 
 $(OBJ):
-	gcc -Wall -Wextra -Werror -c $(SRC_COMPL) -I include/
-
-$(LIB):
 	make -C ./libft/
+	gcc -Wall -Wextra -Werror -c $(SRC_COMPL) -I include/
 
 clean:
 	/bin/rm -f $(OBJ)
