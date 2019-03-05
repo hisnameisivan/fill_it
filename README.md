@@ -1,11 +1,14 @@
 # fill_it
 Can you feel it?
 
-./notest	- компиляция с main.c (основной)
-./validate_test_compile	- компиляция с main_test.c
+Для работы необходимо подключение libft
 
-./start_test_part_1 - запуск тестов // не работает
-./start_test_part_2 - запуск тестов // не работает
+Тесты
+./test_compile - компиляция с main_test.c
+./start_test_valid - запуск тестов
+./start_main - простой тест работоспособности
+
+fil_struct(DEMO).c - отображает "начинку" узлов структуры для отладки
 
 *.ttr - файлы тестов
 

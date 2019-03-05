@@ -1,0 +1,3 @@
+./fillit tests/2.ttr ||
+./fillit tests/9_1.ttr ||
+./fillit tests/4_8.ttr

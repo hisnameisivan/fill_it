@@ -1,0 +1,1 @@
+gcc -Wall -Wextra -Werror -I include/ src/fil_read.c main_test.c libft/libft.a src/fil_valid.c src/fil_struct.c src/fil_struct_additions.c src/fil_algo.c src/fil_map.c
