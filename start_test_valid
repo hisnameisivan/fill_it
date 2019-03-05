@@ -1,1 +1,3 @@
-./a.out tests/test_1.ttr tests/test_2.ttr tests/test_3.ttr tests/test_4.ttr tests/test_5.ttr tests/test_6.ttr tests/test_7.ttr tests/test_8.ttr tests/test_9.ttr tests/test_10.ttr
+./a.out tests/test_1.ttr tests/test_2.ttr tests/test_3.ttr tests/test_4.ttr tests/test_5.ttr tests/test_6.ttr tests/test_7.ttr tests/test_8.ttr tests/test_9.ttr tests/test_10.ttr &&
+./a.out tests/test_11.ttr tests/test_12.ttr tests/test_13.ttr tests/test_14.ttr tests/test_15.ttr tests/test_16.ttr tests/test_17.ttr tests/test_18.ttr tests/test_19.ttr tests/test_20.ttr &&
+./a.out tests/test_21.ttr tests/test_22.ttr tests/test_23.ttr 
