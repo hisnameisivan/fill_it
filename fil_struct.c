@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fil_struct.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: waddam <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/05 02:14:29 by waddam            #+#    #+#             */
+/*   Updated: 2019/03/05 02:22:04 by waddam           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fillit.h"
 
-void	fil_max_xy_struct(char **array, t_flist **list)
+static void	fil_max_xy_struct(char **array, t_flist **list)
 {
 	int		i;
 	int		j;
@@ -27,7 +39,7 @@ void	fil_max_xy_struct(char **array, t_flist **list)
 	}
 }
 
-int		fil_x_struct(char **array, int p)
+static int	fil_x_struct(char **array, int p)
 {
 	int		count;
 	int		i;
@@ -56,7 +68,7 @@ int		fil_x_struct(char **array, int p)
 	return (x);
 }
 
-int		fil_y_struct(char **array, int q)
+static int	fil_y_struct(char **array, int q)
 {
 	int		count;
 	int		i;
@@ -85,7 +97,7 @@ int		fil_y_struct(char **array, int q)
 	return (y);
 }
 
-t_flist	*fil_create_struct(char **array, char letter)
+t_flist		*fil_create_struct(char **array, char letter)
 {
 	int		i;
 	t_flist	*temp;
@@ -111,116 +123,3 @@ t_flist	*fil_create_struct(char **array, char letter)
 	free(array);
 	return (temp);
 }
-
-void	fil_add_struct(t_flist **begin, t_flist *list)	// переделать, если нет begin
-{
-	t_flist	*temp;
-
-	if (begin && list)
-	{
-		temp = *begin;
-		while (temp->next)
-			temp = temp->next;
-		temp->next = list;
-	}
-}
-
-int		fil_len_struct(t_flist *begin)
-{
-	int		len;
-
-	len = 0;
-	if (begin)
-	{
-		while (begin)
-		{
-			len++;
-			begin = begin->next;
-		}
-	}
-	return (len);
-}
-
-void	fil_destroy_list(t_flist **begin)
-{
-	t_flist	*temp;
-
-	temp = NULL;
-	while (*begin)
-	{
-		temp = (*begin)->next;
-		free(*begin);
-		*begin = temp;
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*t_flist	*fil_create_struct1(char **array, char letter)
-{
-	int		i;
-	int		j;
-	t_flist	*temp;
-
-	i = 0;
-	j = 0;
-	if (!(temp = (t_flist *)malloc(sizeof(t_flist))))
-		return (NULL);
-	if (!array)
-	{
-		temp->array = NULL;
-		temp->max_x = 0;
-		temp->max_y = 0;
-		temp->next = NULL;
-	}
-	else
-	{
-		if (!(temp->array = (char **)malloc(sizeof(char *) * 5)))
-		{
-			free(temp);
-			return (NULL);
-		}
-		(temp->array)[4] = NULL;
-		while (i < 4)
-		{
-			if (!(temp->array[i] = (char *)malloc(sizeof(char) * 5)))
-			{
-				while (i > 0)
-				{
-					free((temp->array)[i - 1]);
-					i--;
-				}
-				free(temp->array);
-				free(temp);
-				return (NULL);
-			}
-			//ft_memcpy((temp->array)[i], array[i], 5);
-			j = 0;
-			while (j < 5)
-			{
-				if (array[i][j] == '#')
-					(temp->array)[i][j] = letter;
-				else
-					(temp->array)[i][j] = array[i][j];
-				j++;
-			}
-			i++;
-		}
-		fil_max_xy_struct(array, &temp);
-		temp->next = NULL;
-	}
-	return (temp);
-}*/

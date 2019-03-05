@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: waddam <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/05 01:16:03 by waddam            #+#    #+#             */
+/*   Updated: 2019/03/05 03:48:11 by waddam           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fillit.h"
 
 int		main(int argc, char **argv)
@@ -8,19 +20,23 @@ int		main(int argc, char **argv)
 	begin = NULL;
 	if (argc == 2)
 	{
-		fd = open(argv[1], O_RDONLY);
+		if (!(fd = open(argv[1], O_RDONLY)))
+			return (-1);
 		if (fil_read(fd, &begin) == -1)
-			ft_putendl("usage: ");
+		{
+			ft_putendl("usage: ./fillit valid_map_file");
+			fil_destroy_struct(&begin);
+		}
 		if (fil_core(begin) == -1)
+		{
+			fil_destroy_struct(&begin);
 			exit(-1);
-		fil_destroy_list(&begin);
-		close(fd);
+		}
+		fil_destroy_struct(&begin);
+		if (!(close(fd)))
+			return (-1);
 	}
 	else
-		ft_putendl("usage: ");
+		ft_putendl("usage: ./fillit valid_map_file");
 	return (0);
 }
-
-//TODO:	malloc заменить на strnew где возможно
-//		упаковать инкремент/декремент индекса (?)
-//		защитить malloc и защитить от утечек в случае неудачи

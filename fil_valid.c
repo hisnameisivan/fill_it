@@ -1,309 +1,137 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fil_valid.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: waddam <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/05 01:15:35 by waddam            #+#    #+#             */
+/*   Updated: 2019/03/05 03:14:22 by waddam           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fillit.h"
 
-t_flist	*fil_valid(char *line, int *flag, char letter)
+static int	fil_count_char(char *line, int *flag)
 {
 	int		i;
-	int		count_sharp;
-	int		count_dot;
-	int		count_sn;
+	int		*count;
+
+	i = -1;
+	count = ft_memalloc(12);
+	while (line[++i])
+	{
+		if (line[i] == '#')
+			count[0]++;
+		else if (line[i] == '.')
+			count[1]++;
+		else if (line[i] == '\n')
+		{
+			count[2]++;
+			if (!((i + 1) % 5 == 0 || i == 20))
+				return (0);
+		}
+		else
+			return (0);
+	}
+	if ((count[0] != 4) || (count[1] != 12) || (count[2] < 4 || count[2] > 5))
+		return (0);
+	*flag = (count[2] == 5 ? 1 : 0);
+	ft_memdel((void *)&count);
+	return (1);
+}
+
+static int	fil_check_connections(char *line)
+{
+	int		i;
+	int		count;
+
+	i = 0;
+	count = 0;
+	while (line[i])
+	{
+		if (line[i] == '#' && i < 14 && line[i + 5] == '#')
+			count++;
+		if (line[i] == '#' && i > 4 && line[i - 5] == '#')
+			count++;
+		if (line[i] == '#' && i % 5 != 0 && line[i - 1] == '#')
+			count++;
+		if (line[i] == '#' && i % 5 != 3 && line[i + 1] == '#')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+static void	fil_shift_horizontal(char **array)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (array[i])
+	{
+		j = 0;
+		while (array[i][j])
+		{
+			if (array[i][j] == '#')
+				break ;
+			j++;
+		}
+		if (j == 4 && i == 0)
+		{
+			ft_memcpy(array[i], array[i + 1], 4);
+			ft_memcpy(array[i + 1], array[i + 2], 4);
+			ft_memcpy(array[i + 2], array[i + 3], 4);
+			ft_memcpy(array[i + 3], "....", 4);
+			i = -1;
+		}
+		i++;
+	}
+}
+
+static void	fil_shift_vertical(char **array)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while ((array[0][0] == '.') && (array[1][0] == '.')\
+		&& (array[2][0] == '.') && (array[3][0] == '.'))
+	{
+		i = 0;
+		while (array[i])
+		{
+			j = 0;
+			while (array[i][j])
+			{
+				array[i][j] = array[i][j + 1];
+				j++;
+			}
+			array[i][3] = '.';
+			i++;
+		}
+	}
+}
+
+t_flist		*fil_valid(char *line, int *flag, char letter)
+{
+	int		i;
 	char	**spl_line;
 
 	i = 0;
-	count_sharp = 0;
-	count_dot = 0;
-	count_sn = 0;
-
-
+	spl_line = NULL;
 	if (letter >= '[')
 		return (NULL);
-
-
-	spl_line = ft_strsplit(line, '\n');
-
-
-	while (line[i])
-	{
-		if (line[i] == '#')
-			count_sharp++;
-		else if (line[i] == '.')
-			count_dot++;
-		else if (line[i] == '\n')
-		{
-			count_sn++;
-			if (!((i + 1) % 5 == 0 || i == 20))		// проверка на то, что в строке четыре символа (кратность 5)
-				return (NULL);						// и последний перенос строки, если тетраминок больше одной
-		}
-		else
-			return (NULL);
-		i++;
-	}
-
-
-	if ((count_sharp != 4) || (count_dot != 12)\
-		|| (count_sn < 4 || count_sn > 5))			// 4 звезды, 12 точек, 4 или 5 переносов
+	if (!(fil_count_char(line, flag)))
 		return (NULL);
-	*flag = (count_sn == 5 ? 1 : 0);
-
-
-	fil_shift(&spl_line);
-
-
-	i = 0;
-	while (spl_line[i])								// валидность строк
-	{
-		if (!ft_strcmp(spl_line[i], ".#.#") || !ft_strcmp(spl_line[i], "##.#")\
-			|| !ft_strcmp(spl_line[i], "#.#.") || !ft_strcmp(spl_line[i], "#.##")\
-			|| !ft_strcmp(spl_line[i], "#..#"))
-			return (NULL);
-		else
-			i++;
-	}
-
-
-	i = 0;
-	while (line[i] != '\n')							// валидность столбцов
-	{
-		if ((line[i] == '.' && line[i + 5] == '#' && line[i + 10] == '.' && line[i + 15] == '#')\
-			|| (line[i] == '#' && line[i + 5] == '#' && line[i + 10] == '.' && line[i + 15] == '#')\
-			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '#' && line[i + 15] == '.')\
-			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '#' && line[i + 15] == '#')\
-			|| (line[i] == '#' && line[i + 5] == '.' && line[i + 10] == '.' && line[i + 15] == '#'))
-			return (NULL);
-		else
-			i++;
-	}
-
-
-	// i = 0;
-	// while (spl_line[i])
-	// {
-	// 	free(spl_line[i]);
-	// 	spl_line[i] = NULL;
-	// 	i++;
-	// }
-	// free(spl_line);
-	// spl_line = NULL;
-
-
+	if (fil_check_connections(line) < 6)
+		return (NULL);
+	if (!(spl_line = ft_strsplit(line, '\n')))
+		return (NULL);
+	fil_shift_horizontal(spl_line);
+	fil_shift_vertical(spl_line);
 	return (fil_create_struct(spl_line, letter));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// static t_flist	*begin;							// формирование структуры (черновик), печать для наглядности
-	// t_flist			*temp;
-	// static char		letter = 'A';
-
-	// temp = NULL;
-	// if(!begin)
-	// {
-	// 	begin = fil_create_struct(spl_line, letter);
-	// 	letter++;
-	// 	fil_print_one_struct(begin);
-	// 	ft_putstr("\n");
-	// }
-	// else
-	// {
-	// 	fil_add_struct(&begin, temp = fil_create_struct(spl_line, letter));
-	// 	letter++;
-	// 	fil_print_one_struct(temp);
-	// 	ft_putstr("\n");
-	// }
-	// printf("%d\n", fil_len_struct(begin));
-	// if (!temp)
-	// 	printf("x = %d y = %d\n", begin->max_x, begin->max_y);
-	// if (temp)
-	// 	printf("x = %d y = %d\n", temp->max_x, temp->max_y);
-
-
-	// fil_core(begin, 4);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*	i = 0;
-	j = 0;
-	sim_count = 0;
-	spl_line = ft_strsplit(line, '\n');
-
-	while (spl_line[i])						// проверка на то, что в строке четыре символа
-	{
-		if (ft_strlen(spl_line[i]) == 4)
-			i++;
-		else
-			return (-1);
-	}
-
-	i = 0;
-	while (spl_line[i])						// проверка на то, что четыре решетки (убрать? - нет,
-	{										// ибо простыня ниже будет работать некорректно)
-		j = 0;
-		while (spl_line[i][j])
-		{
-			if (spl_line[i][j] == '#')
-			{
-				sim_count++;
-				j++;
-			}
-			else if (spl_line[i][j] == '.')
-				j++;
-			else
-				return (-1);
-			if (j == 3 && (i + 1) % 4 == 0)	// кратность четырем (одна поданная тетраминка).
-			{								// + 1 т.к. нумерация с нуля
-				if (sim_count != 4)
-					return (-1);
-				else
-					sim_count = 0;
-			}
-		}
-		i++;
-	}
-
-	if (lns_num != (i * 5 / 4 - 1))			// количество без \n (в массиве spl_line) после преобразования
-		return (-1);						// должно равняться начальному количетву \n (lns_num)
-
-	i = 0;
-	while (spl_line[i])						// валидность строк
-	{
-		if (ft_strcmp(spl_line[i], ".#.#") && ft_strcmp(spl_line[i], "##.#")\
-		&& ft_strcmp(spl_line[i], "#.#.") && ft_strcmp(spl_line[i], "#.##")\
-		&& ft_strcmp(spl_line[i], "#.#."))
-			return (-1);
-		else
-			i++;
-	}
-
-	i = 0;
-	while (line[i])							// валидность столбцов
-	{
-		while ((lns_num + 1) * 4 / 5)
-
-		if (line[i] == '0' && line[i + 5] == '0' && line[i] == '0' && line[i] == '0' &&)
-	}*/
-
-/*	i = 0;	// для valgrind
-	while (spl_line[i])
-	{
-		free(spl_line[i]);
-		i++;
-	}
-	free(spl_line);	*/
-	//*array = spl_line;
-
-/*	i = 0;
-	while (spl_line[i])						// проверка на форму тетраминок
-	{
-		j = 0;
-		sim_count = 0;
-		while (spl_line[i][j])
-		{
-			if (spl_line[i][j] == '#')
-			{
-				if (i % 4 == 0)	// первые строки
-				{
-					if (j == 0)	// первый столбец
-					{
-						if (spl_line[i + 1][j] == '#' || spl_line[i][j + 1] == '#')	// ниже и правее
-							continue ;
-						else
-							return (-1);
-					}
-					if (j == 1)	// второй столбец
-					{
-						if (spl_line[i + 1][j] == '#' || spl_line[i][j + 1] == '#' || spl_line[i][j - 1] == '#')	// ниже, правее и левее
-							continue ;
-						else
-							return (-1);
-					}
-					if (j == 2)	// третий столбец
-					{
-						if (spl_line[i + 1][j] == '#' || spl_line[i][j + 1] == '#' || spl_line[i][j - 1] == '#')	// ниже, правее и левее
-							continue ;
-						else
-							return (-1);
-					}
-					if (j == 3)	// четвертый столбец
-					{
-						if (spl_line[i + 1][j] == '#' || spl_line[i][j - 1] == '#')
-							continue ;
-						else
-							return (-1);
-					}
-				}
-			}
-		}
-		i++;
-	}*/

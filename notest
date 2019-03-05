@@ -1,1 +1,1 @@
-gcc -Wall -Wextra -Werror fil_read.c main.c libft/libft.a fil_valid.c fil_shift.c fil_struct.c fil_struct\(DEMO\).c fil_algo.c -g
+gcc -Wall -Wextra -Werror fil_read.c main.c libft/libft.a fil_valid.c fil_struct.c fil_struct_additions.c fil_struct\(DEMO\).c fil_algo.c fil_map.c -g
