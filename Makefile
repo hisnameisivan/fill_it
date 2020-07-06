@@ -13,11 +13,11 @@ OBJ = $(SRC:%.c=%.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	gcc -Wall -Wextra -Werror $(OBJ) -o $(NAME) -L./libft -lft
+	clang -fPIC -g -Wall -Wextra -Werror $(OBJ) -o $(NAME) -L./libft -lft
 
 $(OBJ):
 	make -C ./libft/
-	gcc -Wall -Wextra -Werror -c $(SRC_COMPL) -I include/
+	clang -fPIC -Wall -Wextra -Werror -g -c $(SRC_COMPL) -I include/
 
 clean:
 	/bin/rm -f $(OBJ)
